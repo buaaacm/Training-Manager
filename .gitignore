@@ -1,7 +1,7 @@
 *.pyc
 
 # Local Testing file
-log
+log.*
 
 # Original HTML file
 board_html/
