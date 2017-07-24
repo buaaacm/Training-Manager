@@ -5,3 +5,7 @@ log.*
 
 # Original HTML file
 board_html/
+
+# JetBrains
+.idea
+*.iml
