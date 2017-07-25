@@ -6,8 +6,18 @@ from src.constants import *
 from bs4 import BeautifulSoup
 
 
-def render_detail(detail):
-    html = '<td>'
+class Competitor:
+    def __init__(self, rank, name, problem, penalty, details):
+        self.rank = rank
+        self.name = name
+        self.problem = problem
+        self.penalty = penalty
+        self.details = details
+
+
+def render_detail(detail, first_solved_time):
+    html = ''
+    first_solve = False
     if detail == '@':
         # Haven't tried this problem
         pass
@@ -16,40 +26,71 @@ def render_detail(detail):
         html += '<span class="accepted">'
         if '-' not in detail:
             # Accepted with one submit
+            if detail == first_solved_time:
+                first_solve = True
             html += '+</span><br>%s</br>' % detail
         else:
-            time = detail[:8]
+            pass_time = detail[:8]
+            if pass_time == first_solved_time:
+                first_solve = True
             tries = detail[14:-1]
-            html += '+%s</span><br>%s</br>' % (tries, time)
+            html += '+%s</span><br>%s</br>' % (tries, pass_time)
     else:
         # Haven't passed this problem
         html += '<span class="failed">'
         html += '%s</span>' % detail[1:-1]
-    html += '</td>'
+    if first_solve:
+        html = '<td style="background:lightgreen">' + html + '</td>'
+    else:
+        html = '<td>' + html + '</td>'
     return html
 
 
-def print_row(rank, name, problem, penalty, details):
-    team_name = id_to_team_name_2017[name] if \
-        id_to_team_name_2017.has_key(name) else name
+def print_row(rank, name, problem, penalty, details, first_solved_time):
+    team_name = id_to_team_name_2015[name] if \
+        name in id_to_team_name_2015 else name
+    hour, minute, second = map(int, penalty.split(':'))
     html = u'<tr>'
     html += '<td>%d</td>' % rank
     html += '<td>%s</td>' % team_name
     html += '<td>%s</td>' % problem
-    html += '<td><b>%s</b></td>' % penalty
-    for detail in details:
-        html += render_detail(detail)
+    html += '<td>%d</td>' % (hour * 60 + minute)
+    for detail, first in zip(details, first_solved_time):
+        html += render_detail(detail, first)
     html += '</tr>'
     return html
 
 
-def print_table(file_name, problem_name):
-    rank = 0
+def print_table(problem_num, competitors, problem_name, first_solved_time):
     table = ''
-    problem_num = 0
     header = '<tr><th>#</th><th>Who</th><th>=</th><th>Penalty</th>'
 
-    f = open('board_html/%s.html' % file_name, "r")
+    for competitor in competitors:
+        table += print_row(competitor.rank, competitor.name, competitor.problem,
+                           competitor.penalty, competitor.details,
+                           first_solved_time)
+
+    for i in range(problem_num):
+        header += '<th><a href=""'
+        if problem_name is not None:
+            header += ' title="%s"' % problem_name[i]
+        header += '>%s</a></th>' % chr(ord('A') + i)
+    header += '</tr>'
+
+    return '<table><caption>Standings</caption><tbody>' + header + table + \
+           '</tbody></table>'
+
+
+def print_scoreboard(contest_name, file_name, problem_name=None,
+                     contest_date=date.today()):
+    try:
+        f = open('board_html/%s.html' % file_name, "r")
+    except IOError:
+        return
+
+    competitors = []
+    rank = 0
+    problem_num = 0
     for s in f:
         try:
             t = s.decode('utf-8')
@@ -66,34 +107,32 @@ def print_table(file_name, problem_name):
             details = map(str, items[5].split(' '))[:-1]
             details[0] = details[0][1:]
             problem_num = len(details)
-            table += print_row(rank, team_name, problem_solved, penalty,
-                               details)
+            competitors.append(Competitor(rank, team_name, problem_solved,
+                                          penalty, details))
     f.close()
 
-    for i in range(problem_num):
-        header += '<th><a href=""'
-        if i < len(problem_name):
-            header += ' title="%s"' % problem_name[i]
-        header += '>%s</a></th>' % chr(ord('A') + i)
-    header += '</tr>'
+    first_solved_time = ['99:59:59'] * problem_num
+    for competitor in competitors:
+        for i in range(problem_num):
+            if ':' in competitor.details[i]:
+                solved_time = competitor.details[i]
+                if '<' in solved_time:
+                    solved_time = solved_time.split('<')[0]
+                first_solved_time[i] = min(first_solved_time[i], solved_time)
 
-    return '<table><caption>Standings</caption><tbody>' + header + table + \
-           '</tbody></table>'
-
-
-def print_scoreboard(contest_name, file_name, problem_name=[], contest_date=date.today()):
     html = '<!DOCTYPE html><html><head><meta content="text/html;' \
            ' charset=UTF-8">'
     html += '<title>%s</title>' % contest_name
     html += '<link rel="stylesheet" type="text/css" href="style.css"></head>'
     html += '<body><h1>%s</h1>' % contest_name
     html += '<p>%s</p>' % contest_date
-    html += print_table(file_name, problem_name)
+    html += print_table(problem_num, competitors, problem_name,
+                        first_solved_time)
     html += '<p class="copyright">Generated by <a href="https://github.com/' \
             'buaaacm/Training-Manager">Training Manager</a> at %s.</p>' \
             % time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     html += '</body></html>'
     soup = BeautifulSoup(html)
     f = open('board/%s.html' % file_name, 'w')
-    f.write(soup.prettify())
+    f.write(soup.prettify().encode('utf-8'))
     f.close()

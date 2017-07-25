@@ -7,5 +7,5 @@ log.*
 board_html/
 
 # JetBrains
-.idea
+.idea/
 *.iml
