@@ -3,6 +3,7 @@
 BUAA = unicode("北京航空航天大学", "utf-8")
 
 id_to_team_name_2017 = {
+  'team120': u'瞎搞',
   'team761': u'黑人问号.jpg',
   'team762': u'水能载舟',
   'team763': u'CE使我快乐',

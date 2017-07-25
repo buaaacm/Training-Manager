@@ -3,7 +3,6 @@
 import time
 from datetime import date
 from src.constants import *
-from bs4 import BeautifulSoup
 
 
 class Competitor:
@@ -47,8 +46,8 @@ def render_detail(detail, first_solved_time):
 
 
 def print_row(rank, name, problem, penalty, details, first_solved_time):
-    team_name = id_to_team_name_2015[name] if \
-        name in id_to_team_name_2015 else name
+    team_name = id_to_team_name_2017[name] if \
+        name in id_to_team_name_2017 else name
     hour, minute, second = map(int, penalty.split(':'))
     html = u'<tr>'
     html += '<td>%d</td>' % rank
@@ -71,7 +70,7 @@ def print_table(problem_num, competitors, problem_name, first_solved_time):
                            first_solved_time)
 
     for i in range(problem_num):
-        header += '<th><a href=""'
+        header += '<th><a href="http://acm.hdu.edu.cn/contests/contest_showproblem.php?pid=1001&cid=759"'
         if problem_name is not None:
             header += ' title="%s"' % problem_name[i]
         header += '>%s</a></th>' % chr(ord('A') + i)
@@ -132,7 +131,6 @@ def print_scoreboard(contest_name, file_name, problem_name=None,
             'buaaacm/Training-Manager">Training Manager</a> at %s.</p>' \
             % time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     html += '</body></html>'
-    soup = BeautifulSoup(html)
     f = open('board/%s.html' % file_name, 'w')
-    f.write(soup.prettify().encode('utf-8'))
+    f.write(html.encode('utf-8'))
     f.close()
