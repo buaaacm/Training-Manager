@@ -1,14 +1,11 @@
 # coding=utf-8
 
 from src import *
-import datetime
+# import datetime
 
 if __name__ == '__main__':
-    print_scoreboard('2017 Multi-University Training Contest 1', '2017_01',
-                     contest_date=datetime.date(2017, 7, 25),
-                     problem_name=["Add More Zero", "Balala Power!",
-                                   "Colorful Tree", "Division Game",
-                                   "Expectation Division", "Function",
-                                   "Gear Up", "Hints of sd0061",
-                                   "I Curse Myself", "Journey with Knapsack",
-                                   "KazaQ's Socks", "Limited Permutation"])
+    parse(761)
+
+
+#    print_scoreboard('2017 Multi-University Training Contest 3', '2017_03',
+#                     problem_name=["simple counting problem", "Kanade's convolution", "Kanade's sum", "Kanade's trio", "RXD and dividing", "RXD and functions", "RXD and logic gates", "RXD and math", "RXD and numbers", "RXD, tree and sequence", "RXD's date"])

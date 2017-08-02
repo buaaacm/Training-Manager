@@ -3,6 +3,7 @@
 import time
 from datetime import date
 from src.constants import *
+from bs4 import BeautifulSoup
 
 
 class Competitor:
@@ -70,7 +71,7 @@ def print_table(problem_num, competitors, problem_name, first_solved_time):
                            first_solved_time)
 
     for i in range(problem_num):
-        header += '<th><a href="http://acm.hdu.edu.cn/contests/contest_showproblem.php?pid=1001&cid=759"'
+        header += '<th><a href="http://acm.hdu.edu.cn/contests/contest_showproblem.php?pid=10%02d&cid=761"' % (i + 1)
         if problem_name is not None:
             header += ' title="%s"' % problem_name[i]
         header += '>%s</a></th>' % chr(ord('A') + i)
@@ -132,5 +133,6 @@ def print_scoreboard(contest_name, file_name, problem_name=None,
             % time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     html += '</body></html>'
     f = open('board/%s.html' % file_name, 'w')
+    html = BeautifulSoup(html).prettify()
     f.write(html.encode('utf-8'))
     f.close()
