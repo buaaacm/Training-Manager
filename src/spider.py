@@ -85,7 +85,7 @@ class HduModule(object):
         url = 'http://acm.hdu.edu.cn/contests/contest_show.php?cid=%d' % \
               self.contest_id
         r = self.session.get(url)
-        soup = BeautifulSoup(r.text)
+        soup = BeautifulSoup(r.text, 'html.parser')
         title = soup.findChild('h1').text
         if '- Team' in title:  # For unification, replace "- Team X" with "X"
             word = title.split(' ')

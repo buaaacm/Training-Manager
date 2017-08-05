@@ -136,6 +136,6 @@ def print_scoreboard(contest_id, contest_name, file_name, problem_name=None,
             % time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     html += '</body></html>'
     f = open('board/%s.html' % file_name, 'w')
-    html = BeautifulSoup(html).prettify()
+    html = BeautifulSoup(html, 'html.parser').prettify()
     f.write(html.encode('utf-8'))
     f.close()
