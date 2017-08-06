@@ -5,6 +5,10 @@ from datetime import date
 from src.constants import *
 from bs4 import BeautifulSoup
 
+# Saving time and penalty of all problems
+statues = {}
+
+rank_list = []
 
 class Competitor:
     def __init__(self, rank, name, problem, penalty, details):
@@ -15,7 +19,16 @@ class Competitor:
         self.details = details
 
 
-def render_detail(detail, first_solved_time):
+def time_passed(pass_time):
+    # transform hh:mm:ss to minute
+    h, m, s = pass_time.split(':')
+    t = int(m) + int(h) * 60
+    if s != '00':
+        t += 1
+    return t
+
+
+def render_detail(detail, first_solved_time, pass_list):
     html = ''
     first_solve = False
     if detail == '@':
@@ -29,12 +42,14 @@ def render_detail(detail, first_solved_time):
             if detail == first_solved_time:
                 first_solve = True
             html += '+</span><br>%s</br>' % detail
+            pass_list.append((time_passed(detail), time_passed(detail)))
         else:
             pass_time = detail[:8]
             if pass_time == first_solved_time:
                 first_solve = True
             tries = detail[14:-1]
             html += '+%s</span><br>%s</br>' % (tries, pass_time)
+            pass_list.append((time_passed(pass_time), time_passed(pass_time) + int(tries) * 20))
     else:
         # Haven't passed this problem
         html += '<span class="failed">'
@@ -55,8 +70,11 @@ def print_row(rank, name, problem, penalty, details, first_solved_time):
     html += '<td>%s</td>' % team_name
     html += '<td>%s</td>' % problem
     html += '<td>%d</td>' % (hour * 60 + minute)
+    pass_list = []
     for detail, first in zip(details, first_solved_time):
-        html += render_detail(detail, first)
+        html += render_detail(detail, first, pass_list)
+    statues[team_name] = sorted(pass_list)
+    rank_list.append(team_name)
     html += '</tr>'
     print "Log: ", team_name, problem, penalty
     return html
@@ -82,6 +100,34 @@ def print_table(contest_id, problem_num, competitors, problem_name,
 
     return '<table><caption>Standings</caption><tbody>' + header + table + \
            '</tbody></table>'
+
+
+def print_chart(length=300):
+    changed_time = [0, length]
+    for team in rank_list:
+        for status in statues[team]:
+            changed_time.append(status[0])
+        print("data.addColumn('number', '%s');" % team)
+    changed_time = sorted(set(changed_time))
+
+    for stamp in changed_time:
+        score = {}
+        for team in rank_list:
+            solved, penalty = 0, 0
+            for status in statues[team]:
+                if status[0] <= stamp:
+                    solved += 1
+                    penalty += status[1]
+            score[team] = (solved, -penalty)
+        line = [stamp]
+
+        for team in rank_list:
+            rank = 1
+            for key in score.keys():
+                if score[key] > score[team]:
+                    rank += 1
+            line.append(rank)
+        print str(line) + ","
 
 
 def print_scoreboard(contest_id, contest_name, file_name, problem_name=None,
@@ -139,3 +185,5 @@ def print_scoreboard(contest_id, contest_name, file_name, problem_name=None,
     html = BeautifulSoup(html, 'html.parser').prettify()
     f.write(html.encode('utf-8'))
     f.close()
+
+    print_chart()
