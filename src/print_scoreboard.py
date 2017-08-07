@@ -6,7 +6,7 @@ from src.constants import *
 from bs4 import BeautifulSoup
 
 # Saving time and penalty of all problems
-statues = {}
+statuses = {}
 
 rank_list = []
 
@@ -24,8 +24,6 @@ def time_passed(pass_time):
     # transform hh:mm:ss to minute
     h, m, s = pass_time.split(':')
     t = int(m) + int(h) * 60
-    if s != '00':
-        t += 1
     return t
 
 
@@ -78,7 +76,7 @@ def print_row(rank, name, problem, penalty, details, first_solved_time):
     for detail, first, pid in zip(details, first_solved_time,
                                   range(len(details))):
         html += render_detail(pid, detail, first, pass_list)
-    statues[team_name] = pass_list
+    statuses[team_name] = pass_list
     rank_list.append(team_name)
     html += '</tr>'
     print "Log: ", team_name, problem, penalty
@@ -110,7 +108,7 @@ def print_table(contest_id, problem_num, competitors, problem_name,
 def print_chart(length=300):
     changed_time = [0, length]
     for team in rank_list:
-        for status in statues[team]:
+        for status in statuses[team]:
             if 0 <= status[1] <= length:
                 changed_time.append(status[1])
         print("data.addColumn('number', '%s');" % team)
@@ -122,7 +120,7 @@ def print_chart(length=300):
         score = {}
         for team in rank_list:
             solved, penalty = 0, 0
-            for status in statues[team]:
+            for status in statuses[team]:
                 if 0 <= status[1] <= stamp:
                     solved += 1
                     penalty += status[1] + status[2] * 20
@@ -137,7 +135,7 @@ def print_chart(length=300):
             row.append(-rank)
 
             solved_this_stamp = ''
-            for status in statues[team]:
+            for status in statuses[team]:
                 if status[1] == stamp:
                     solved_this_stamp += chr(ord('A') + status[0])
             if solved_this_stamp == '':
@@ -207,4 +205,7 @@ def print_scoreboard(contest_id, contest_name, file_name, problem_name=None,
     f.close()
 
     print_chart()
-    print(json.dumps(statues))
+
+    contest = {'title': contest_name, 'date': str(contest_date), 'num': problem_num, 'statuses': statuses,
+               'ranklist': rank_list}
+    print(json.dumps(contest))
