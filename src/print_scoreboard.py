@@ -10,6 +10,7 @@ statues = {}
 
 rank_list = []
 
+
 class Competitor:
     def __init__(self, rank, name, problem, penalty, details):
         self.rank = rank
@@ -28,11 +29,11 @@ def time_passed(pass_time):
     return t
 
 
-def render_detail(detail, first_solved_time, pass_list):
+def render_detail(pid, detail, first_solved_time, pass_list):
     html = ''
     first_solve = False
+    pass_time, penalty = 999999, 0
     if detail == '@':
-        # Haven't tried this problem
         pass
     elif ':' in detail:
         # Accepted
@@ -42,18 +43,19 @@ def render_detail(detail, first_solved_time, pass_list):
             if detail == first_solved_time:
                 first_solve = True
             html += '+</span><br>%s</br>' % detail
-            pass_list.append((time_passed(detail), time_passed(detail)))
+            pass_time, penalty = time_passed(detail), time_passed(detail)
         else:
             pass_time = detail[:8]
             if pass_time == first_solved_time:
                 first_solve = True
             tries = detail[14:-1]
             html += '+%s</span><br>%s</br>' % (tries, pass_time)
-            pass_list.append((time_passed(pass_time), time_passed(pass_time) + int(tries) * 20))
+            pass_time, penalty = time_passed(pass_time), time_passed(pass_time) + int(tries) * 20
     else:
         # Haven't passed this problem
         html += '<span class="failed">'
         html += '%s</span>' % detail[1:-1]
+    pass_list.append((pid, pass_time, penalty))
     if first_solve:
         html = '<td style="background:lightgreen">' + html + '</td>'
     else:
@@ -71,9 +73,10 @@ def print_row(rank, name, problem, penalty, details, first_solved_time):
     html += '<td>%s</td>' % problem
     html += '<td>%d</td>' % (hour * 60 + minute)
     pass_list = []
-    for detail, first in zip(details, first_solved_time):
-        html += render_detail(detail, first, pass_list)
-    statues[team_name] = sorted(pass_list)
+    for detail, first, pid in zip(details, first_solved_time,
+                                  range(len(details))):
+        html += render_detail(pid, detail, first, pass_list)
+    statues[team_name] = pass_list
     rank_list.append(team_name)
     html += '</tr>'
     print "Log: ", team_name, problem, penalty
@@ -106,28 +109,43 @@ def print_chart(length=300):
     changed_time = [0, length]
     for team in rank_list:
         for status in statues[team]:
-            changed_time.append(status[0])
+            if status[1] <= length:
+                changed_time.append(status[1])
         print("data.addColumn('number', '%s');" % team)
+        print("data.addColumn({type:'string', role:'annotation'});")
     changed_time = sorted(set(changed_time))
 
+    data = []
     for stamp in changed_time:
         score = {}
         for team in rank_list:
             solved, penalty = 0, 0
             for status in statues[team]:
-                if status[0] <= stamp:
+                if status[1] <= stamp:
                     solved += 1
-                    penalty += status[1]
+                    penalty += status[2]
             score[team] = (solved, -penalty)
-        line = [stamp]
+        row = [stamp]
 
         for team in rank_list:
             rank = 1
             for key in score.keys():
                 if score[key] > score[team]:
                     rank += 1
-            line.append(rank)
-        print str(line) + ","
+            row.append(-rank)
+
+            solved_this_stamp = ''
+            for status in statues[team]:
+                if status[1] == stamp:
+                    solved_this_stamp += chr(ord('A') + status[0])
+            if solved_this_stamp == '':
+                row.append(None)
+            else:
+                row.append(solved_this_stamp)
+
+        data.append(row)
+    for row in data:
+        print(str(row) + ",")
 
 
 def print_scoreboard(contest_id, contest_name, file_name, problem_name=None,
