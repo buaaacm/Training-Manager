@@ -1,5 +1,5 @@
 # coding=utf-8
-
+import json
 import time
 from datetime import date
 from src.constants import *
@@ -32,7 +32,7 @@ def time_passed(pass_time):
 def render_detail(pid, detail, first_solved_time, pass_list):
     html = ''
     first_solve = False
-    pass_time, penalty = 999999, 0
+    pass_time, penalty = -1, 0
     if detail == '@':
         pass
     elif ':' in detail:
@@ -109,7 +109,7 @@ def print_chart(length=300):
     changed_time = [0, length]
     for team in rank_list:
         for status in statues[team]:
-            if status[1] <= length:
+            if 0 <= status[1] <= length:
                 changed_time.append(status[1])
         print("data.addColumn('number', '%s');" % team)
         print("data.addColumn({type:'string', role:'annotation'});")
@@ -121,7 +121,7 @@ def print_chart(length=300):
         for team in rank_list:
             solved, penalty = 0, 0
             for status in statues[team]:
-                if status[1] <= stamp:
+                if 0 <= status[1] <= stamp:
                     solved += 1
                     penalty += status[2]
             score[team] = (solved, -penalty)
@@ -145,7 +145,7 @@ def print_chart(length=300):
 
         data.append(row)
     for row in data:
-        print(str(row) + ",")
+        print(json.dumps(row) + ",")
 
 
 def print_scoreboard(contest_id, contest_name, file_name, problem_name=None,
@@ -205,3 +205,4 @@ def print_scoreboard(contest_id, contest_name, file_name, problem_name=None,
     f.close()
 
     print_chart()
+    # print(json.dumps(statues))
