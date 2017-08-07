@@ -32,7 +32,7 @@ def time_passed(pass_time):
 def render_detail(pid, detail, first_solved_time, pass_list):
     html = ''
     first_solve = False
-    pass_time, penalty = -1, 0
+    pass_time, submit = -1, 0
     if detail == '@':
         pass
     elif ':' in detail:
@@ -43,19 +43,21 @@ def render_detail(pid, detail, first_solved_time, pass_list):
             if detail == first_solved_time:
                 first_solve = True
             html += '+</span><br>%s</br>' % detail
-            pass_time, penalty = time_passed(detail), time_passed(detail)
+            pass_time, submit = time_passed(detail), 0
         else:
             pass_time = detail[:8]
             if pass_time == first_solved_time:
                 first_solve = True
             tries = detail[14:-1]
             html += '+%s</span><br>%s</br>' % (tries, pass_time)
-            pass_time, penalty = time_passed(pass_time), time_passed(pass_time) + int(tries) * 20
+            pass_time, submit = time_passed(pass_time), int(tries)
     else:
         # Haven't passed this problem
         html += '<span class="failed">'
         html += '%s</span>' % detail[1:-1]
-    pass_list.append((pid, pass_time, penalty))
+        submit = -int(detail[1:-1])
+
+    pass_list.append((pid, pass_time, submit))
     if first_solve:
         html = '<td style="background:lightgreen">' + html + '</td>'
     else:
@@ -123,7 +125,7 @@ def print_chart(length=300):
             for status in statues[team]:
                 if 0 <= status[1] <= stamp:
                     solved += 1
-                    penalty += status[2]
+                    penalty += status[1] + status[2] * 20
             score[team] = (solved, -penalty)
         row = [stamp]
 
@@ -205,4 +207,4 @@ def print_scoreboard(contest_id, contest_name, file_name, problem_name=None,
     f.close()
 
     print_chart()
-    # print(json.dumps(statues))
+    print(json.dumps(statues))
