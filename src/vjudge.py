@@ -54,11 +54,11 @@ def parse_vjudge(contest_name, contest_date=date.today()):
                 hour, minute, second = map(int, time.split(':'))
                 pass_list.append((pid, hour * 60 + minute, int(tries[2:-1])))
             else:
-                pass_list.append((pid, -1, int(status[2:-1])))
+                pass_list.append((pid, -1, -int(status[2:-1])))
 
         rank_list.append(team_name_vjudge[team])
         statuses[team_name_vjudge[team]] = pass_list
 
     contest = {'title': contest_name, 'date': str(contest_date), 'num': problem_num, 'statuses': statuses,
-               'ranklist': rank_list, 'time': 390}
+               'ranklist': rank_list}
     print(json.dumps(contest))
