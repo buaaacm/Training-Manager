@@ -6,6 +6,9 @@ log.*
 # Original HTML file
 board_html/
 
+# Confidential team id
+src/constants.py
+
 # JetBrains
 .idea/
 *.iml

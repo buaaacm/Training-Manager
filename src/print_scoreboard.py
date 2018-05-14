@@ -64,8 +64,8 @@ def render_detail(pid, detail, first_solved_time, pass_list):
 
 
 def print_row(rank, name, problem, penalty, details, first_solved_time):
-    team_name = id_to_team_name_2017[name] if \
-        name in id_to_team_name_2017 else name
+    team_name = id_to_team_name_qingdao[name] if \
+        name in id_to_team_name_qingdao else name
     hour, minute, second = map(int, penalty.split(':'))
     html = u'<tr>'
     html += '<td>%d</td>' % rank
@@ -169,6 +169,9 @@ def print_scoreboard(contest_id, contest_name, file_name, problem_name=None,
             rank += 1
             items = t.split(',')
             team_name = items[2][1:-1]
+            if team_name not in id_to_team_name_qingdao:
+                continue
+
             problem_solved = str(items[3])
             penalty = str(items[4])[1:-1]
             details = map(str, items[5].split(' '))[:-1]

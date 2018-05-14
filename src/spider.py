@@ -100,7 +100,7 @@ class HduModule(object):
 
 def parse(contest_id, file_name):
     run = HduModule(contest_id)
-    run.login('team080', '023398')
+    run.login('team1654', '081490')
     f = open('board_html/%s.html' % file_name, 'w')
     board = run.get_scoreboard()
     f.write(board.encode('utf-8'))
