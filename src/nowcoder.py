@@ -4,19 +4,19 @@ from datetime import date
 from bs4 import BeautifulSoup
 
 team_name_nowcoder = {
-  'team1': u'趣味时光',
-  'team2': u'小黄鸡咕咕咕',
-  'team3': u'啊，队友呢？！',
-  'team4': u'比宇宙更远的地方',
-  'team5': u'除了AC',
-  'team6': u'从不刷题队',
-  'team7': u'“”',
-  'team8': u'梦中做自己',
-  'team9': u'菜里别加鎕',
-  'team10': u'点击输入队名',
-  'team11': u'稽不择名',
-  'team12': u'彩笔队',
-  'team13': u'怪兽防卫团',
+  u'BUAA_NonsenseTime': u'趣味时光',
+  u'BUAA_Ascender': u'小黄鸡咕咕咕',
+  u'BUAA_队友呢？队友呢？队友呢？': u'啊，队友呢？！',
+  u'BUAA_比宇宙更远的地方': u'比宇宙更远的地方',
+  u'BUAA_Away_with_Correct': u'除了AC',
+  u'BUAA_从不刷题队': u'从不刷题队',
+  u'BUAA_NULL': u'“”',
+  u'BUAA_ForTheDream': u'梦中做自己',
+  u'BUAA_菜里别加鎕': u'菜里别加鎕',
+  u'BUAA_点击输入队名': u'点击输入队名',
+  u'BUAA_Alchemist': u'稽不择名',
+  u'BUAA_彩笔队': u'彩笔队',
+  u'BUAA_Mac': u'怪兽防卫团',
 }
 
 statuses = {}
@@ -24,7 +24,7 @@ rank_list = []
 
 
 def parse_team_name_nowcoder(contest_name, contest_date=date.today()):
-    f = open('board_html/nowcoder_board.html', 'r')
+    f = open('board/nowcoder_board.html', 'r')
     html = f.readline()
     soup = BeautifulSoup(html, "html.parser")
 
