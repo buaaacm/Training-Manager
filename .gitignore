@@ -1,10 +1,11 @@
 *.pyc
+*.bak
 
 # Local Testing file
 log.*
 
 # Original HTML file
-board_html/
+board/
 
 # Confidential team id
 src/constants.py

@@ -40,4 +40,4 @@ def parse_jisuanke(contest_name, contest_date=date.today()):
 
     contest = {'title': contest_name, 'date': str(contest_date), 'num': problem_num, 'statuses': statuses,
                'ranklist': rank_list}
-    print(json.dumps(contest))
+    print((json.dumps(contest)))

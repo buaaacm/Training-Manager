@@ -4,20 +4,20 @@ from datetime import date
 from bs4 import BeautifulSoup
 
 team_name_vjudge = {
-  'team120': u'瞎搞',
-  'blackamoor': u'黑人问号.jpg',
-  'deticxe': u'水能载舟',
-  'team109': u'CE使我快乐',
-  'ResuscitatedHope': u'复苏',
-  'sro_orz': u'我们吓成一团了',
-  'Ascender': u'TAT',
-  'team_include': u'头文件',
-  'Life_is_Perfect': u'人生已经如此的艰难',
-  'heynihao': u'我需要治疗',
-  'buaa_terminator': u'终结者',
-  'tan90': u'不存在的',
-  'tvcr': u'tvcr',
-  'TooFarTooClose': u'极值点',
+  'nonsensetime': '趣味时光',
+  'AccountNumber': '未定群名',
+  'AwayWithCorrect': '打不赢电脑',
+  'Butter_Fly': '无限大の梦',
+  'woafrnraetns': '某人征婚',
+  'maxdumbledore': '试炼者',
+  'lxd150039': '肉夹馍',
+  'HolmiumJiang': 'CE：从爆零开始的ACM生活',
+  'dragonylee': '很抱歉，该队名已被删除',
+  'Potassium73': '萌新求带',
+  'Kevin00': '根据相关法规，队名不予显示',
+  'CoachXP': 'AC 怪',
+  'hugegun': '我裂开了',
+  '1937OvO': '将来我一定比你聪明比你强',
 }
 
 statuses = {}
@@ -25,7 +25,7 @@ rank_list = []
 
 
 def parse_vjudge(contest_name, contest_date=date.today()):
-    f = open('board_html/vjudge_board.html', 'r')
+    f = open('board/vjudge_board.html', 'r')
     html = f.readline()
     soup = BeautifulSoup(html, "html.parser")
     problem_num = len((soup.find('tr')).find_all('th')) - 4
@@ -51,7 +51,7 @@ def parse_vjudge(contest_name, contest_date=date.today()):
                 else:
                     time = status
                     tries = '(-0)'
-                hour, minute, second = map(int, time.split(':'))
+                hour, minute, _ = list(map(int, time.split(':')))
                 pass_list.append((pid, hour * 60 + minute, int(tries[2:-1])))
             else:
                 pass_list.append((pid, -1, -int(status[2:-1])))
@@ -61,4 +61,4 @@ def parse_vjudge(contest_name, contest_date=date.today()):
 
     contest = {'title': contest_name, 'date': str(contest_date), 'num': problem_num, 'statuses': statuses,
                'ranklist': rank_list}
-    print(json.dumps(contest))
+    print((json.dumps(contest)))

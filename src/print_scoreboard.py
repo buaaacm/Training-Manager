@@ -22,7 +22,7 @@ class Competitor:
 
 def time_passed(pass_time):
     # transform hh:mm:ss to minute
-    h, m, s = pass_time.split(':')
+    h, m, _ = pass_time.split(':')
     t = int(m) + int(h) * 60
     return t
 
@@ -66,20 +66,20 @@ def render_detail(pid, detail, first_solved_time, pass_list):
 def print_row(rank, name, problem, penalty, details, first_solved_time):
     team_name = id_to_team_name_qingdao[name] if \
         name in id_to_team_name_qingdao else name
-    hour, minute, second = map(int, penalty.split(':'))
-    html = u'<tr>'
+    hour, minute, second = list(map(int, penalty.split(':')))
+    html = '<tr>'
     html += '<td>%d</td>' % rank
     html += '<td>%s</td>' % team_name
     html += '<td>%s</td>' % problem
     html += '<td>%d</td>' % (hour * 60 + minute)
     pass_list = []
     for detail, first, pid in zip(details, first_solved_time,
-                                  range(len(details))):
+                                  list(range(len(details)))):
         html += render_detail(pid, detail, first, pass_list)
     statuses[team_name] = pass_list
     rank_list.append(team_name)
     html += '</tr>'
-    print "Log: ", team_name, problem, penalty
+    print(("Log: ", team_name, problem, penalty))
     return html
 
 
@@ -111,7 +111,7 @@ def print_chart(length=300):
         for status in statuses[team]:
             if 0 <= status[1] <= length:
                 changed_time.append(status[1])
-        print("data.addColumn('number', '%s');" % team)
+        print(("data.addColumn('number', '%s');" % team))
         print("data.addColumn({type:'string', role:'annotation'});")
     changed_time = sorted(set(changed_time))
 
@@ -129,7 +129,7 @@ def print_chart(length=300):
 
         for team in rank_list:
             rank = 1
-            for key in score.keys():
+            for key in list(score.keys()):
                 if score[key] > score[team]:
                     rank += 1
             row.append(-rank)
@@ -145,7 +145,7 @@ def print_chart(length=300):
 
         data.append(row)
     for row in data:
-        print(json.dumps(row) + ",")
+        print((json.dumps(row) + ","))
 
 
 def print_scoreboard(contest_id, contest_name, file_name, problem_name=None,
@@ -174,7 +174,7 @@ def print_scoreboard(contest_id, contest_name, file_name, problem_name=None,
 
             problem_solved = str(items[3])
             penalty = str(items[4])[1:-1]
-            details = map(str, items[5].split(' '))[:-1]
+            details = list(map(str, items[5].split(' ')))[:-1]
             details[0] = details[0][1:]
             problem_num = len(details)
             competitors.append(Competitor(rank, team_name, problem_solved,
@@ -211,4 +211,4 @@ def print_scoreboard(contest_id, contest_name, file_name, problem_name=None,
 
     contest = {'title': contest_name, 'date': str(contest_date), 'num': problem_num, 'statuses': statuses,
                'ranklist': rank_list}
-    print(json.dumps(contest))
+    print((json.dumps(contest)))

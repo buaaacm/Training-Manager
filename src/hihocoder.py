@@ -19,7 +19,7 @@ def parse_hihocoder(contest_name, contest_date=date.today()):
         info = row.find_all('td')
 
         school = info[1].text
-        if school != u'北京航空航天大学':
+        if school != '北京航空航天大学':
             continue
 
         team = info[2].text
@@ -31,7 +31,7 @@ def parse_hihocoder(contest_name, contest_date=date.today()):
 
         for detail in info[5:]:
             status = detail.text.strip()
-            print status
+            print(status)
             if ':' not in status:
                 if '(' in status:
                     tries = -int(status[1:-1])
@@ -46,7 +46,7 @@ def parse_hihocoder(contest_name, contest_date=date.today()):
                 else:
                     sp = status
                     tries = 0
-                h, m, s = map(int, sp.split(':'))
+                h, m, s = list(map(int, sp.split(':')))
                 time = h * 60 + m
                 pass_list.append((pid, time, tries))
                 # print(time, tries)
@@ -55,4 +55,4 @@ def parse_hihocoder(contest_name, contest_date=date.today()):
 
     contest = {'title': contest_name, 'date': str(contest_date), 'num': problem_num, 'statuses': statuses,
                'ranklist': rank_list}
-    print(json.dumps(contest))
+    print((json.dumps(contest)))
