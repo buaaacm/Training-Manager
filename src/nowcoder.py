@@ -62,7 +62,7 @@ def parse_team_name_nowcoder(contest_name, contest_date=date.today()):
 
             if ':' in status:
                 time_str = status[:8]
-                hour, minute, second = list(map(int, time_str.split(':')))
+                hour, minute, _ = list(map(int, time_str.split(':')))
                 pass_time = hour * 60 + minute
             if '(' in status:
                 wrong_tries = -int(status[:-1].split('(')[1])

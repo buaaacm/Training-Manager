@@ -7,9 +7,7 @@ from bs4 import BeautifulSoup
 
 # Saving time and penalty of all problems
 statuses = {}
-
 rank_list = []
-
 
 class Competitor:
     def __init__(self, rank, name, problem, penalty, details):
@@ -66,7 +64,7 @@ def render_detail(pid, detail, first_solved_time, pass_list):
 def print_row(rank, name, problem, penalty, details, first_solved_time):
     team_name = id_to_team_name_qingdao[name] if \
         name in id_to_team_name_qingdao else name
-    hour, minute, second = list(map(int, penalty.split(':')))
+    hour, minute, _ = list(map(int, penalty.split(':')))
     html = '<tr>'
     html += '<td>%d</td>' % rank
     html += '<td>%s</td>' % team_name

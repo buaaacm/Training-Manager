@@ -9,7 +9,8 @@ The Training Manager will be used by The ICPC Training Team of Beihang Universit
 Currently the supported Online Judges are:
 
 - [HDOJ](acm.hdu.edu.cn) (The Host of Multi-University Training)
+- [Nowcoder](ac.nowcoder.com)
+- [vjudge](vjudge.net)
 - [Codeforce Gyms](http://codeforces.com/gyms)[TODO] 
-- [vjudge](vjudge.net)[TODO]
 
 ![scoreboard](img/scoreboard.png)
