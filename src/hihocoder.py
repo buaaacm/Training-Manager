@@ -9,7 +9,7 @@ rank_list = []
 
 
 def parse_hihocoder(contest_name, contest_date=date.today()):
-    f = open('board_html/hihocoder_board.html', 'r')
+    f = open('board/hihocoder_board.html', 'r')
     html = ''.join(f.readlines())
     soup = BeautifulSoup(html, "html.parser")
 
@@ -46,7 +46,7 @@ def parse_hihocoder(contest_name, contest_date=date.today()):
                 else:
                     sp = status
                     tries = 0
-                h, m, s = list(map(int, sp.split(':')))
+                h, m, _ = list(map(int, sp.split(':')))
                 time = h * 60 + m
                 pass_list.append((pid, time, tries))
                 # print(time, tries)

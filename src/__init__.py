@@ -4,3 +4,4 @@ from .vjudge import *
 from .jisuanke import *
 from .hihocoder import *
 from .nowcoder import *
+from .codeforces import *

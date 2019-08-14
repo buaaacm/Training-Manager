@@ -25,6 +25,7 @@ rank_list = []
 
 
 def parse_team_name_nowcoder(contest_name, contest_date=date.today()):
+    # rank-main class
     f = open('board/nowcoder_board.html', 'r')
     html = f.readline()
     soup = BeautifulSoup(html, "html.parser")
