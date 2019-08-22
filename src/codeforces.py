@@ -11,7 +11,7 @@ team_name_codeforces = {
   'Nonsense Time': '趣味时光',
   'temporary': '未定群名',
   'Knocked out by AI': '打不赢电脑',
-  'Butter-Fly': '无限大の梦',
+  'Butter_Fly': '无限大の梦',
   'fishing': '某人征婚',
   'Alchemist': '试炼者',
   'Chinese Hamburger': '肉夹馍',
@@ -21,7 +21,10 @@ team_name_codeforces = {
   '403 Forbidden': '根据相关法规，队名不予显示',
   'ACmonster': 'AC 怪',
   'We Gathered': '我裂开了',
-  '将来我一定比你聪明比你强': '将来我一定比你聪明比你强',
+  '将来我一定比你聪明比你强': '将来我一定比你聪明比你强',  
+
+  '大吉大利，今晚吃 mian();': '*大吉大利，今晚吃 mian();',
+  'running_chicken': '*running_chicken',
 }
 
 def parse_codeforces(contest_name, contest_date=date.today()):
@@ -29,7 +32,7 @@ def parse_codeforces(contest_name, contest_date=date.today()):
     html = ''.join(f.readlines())
     soup = BeautifulSoup(html, "html.parser")
 
-    problem_num = len(soup.find_all('th')) - 5
+    problem_num = len(soup.find_all('th')) - 4
 
     for row in soup.find_all('tr')[1:-1]:
         info = row.find_all('td')
@@ -41,7 +44,7 @@ def parse_codeforces(contest_name, contest_date=date.today()):
         pass_list = []  # .append((pid, pass_time, submit))
         pid = 0
 
-        for detail in info[5:]:
+        for detail in info[4:]:
             status = detail.text.strip()
             if ':' not in status:
                 if '-' in status:

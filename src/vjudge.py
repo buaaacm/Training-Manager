@@ -9,8 +9,8 @@ team_name_vjudge = {
   'AwayWithCorrect': '打不赢电脑',
   'Butter_Fly': '无限大の梦',
   'woafrnraetns': '某人征婚',
-  'maxdumbledore': '试炼者',
-  'lxd150039': '肉夹馍',
+  'BUAA_Alchemist': '试炼者',
+  'Chinese_ham': '肉夹馍',
   'HolmiumJiang': 'CE：从爆零开始的ACM生活',
   'dragonylee': '很抱歉，该队名已被删除',
   'Potassium73': '萌新求带',
@@ -18,6 +18,9 @@ team_name_vjudge = {
   'CoachXP': 'AC 怪',
   'hugegun': '我裂开了',
   '1937OvO': '将来我一定比你聪明比你强',
+  
+  'BUAA_mian': '*大吉大利，今晚吃 mian();',
+  'yyxzhj': '*running_chicken',
 }
 
 statuses = {}
