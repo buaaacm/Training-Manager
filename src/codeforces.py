@@ -8,27 +8,53 @@ statuses = {}
 rank_list = []
 
 team_name_codeforces = {
-  'Nonsense Time': '趣味时光',
-  'temporary': '未定群名',
-  'Knocked out by AI': '打不赢电脑',
-  'Butter_Fly': '无限大の梦',
-  'fishing': '某人征婚',
-  'Alchemist': '试炼者',
-  'Chinese Hamburger': '肉夹馍',
-  'CE_ACM Life From Zero': 'CE：从爆零开始的ACM生活',
-  '404_name_not_found': '很抱歉，该队名已被删除',
-  'freshmanAirProPlus': '萌新求带',
-  '403 Forbidden': '根据相关法规，队名不予显示',
-  'ACmonster': 'AC 怪',
-  'We Gathered': '我裂开了',
-  '将来我一定比你聪明比你强': '将来我一定比你聪明比你强',  
+    'Retired': '苍响',
+    'Alchemist': '试炼者',
+    'I dont know.png': '我不知道.png',
+    'Looking_up_at_the_starry_sky': '仰望星空',
+    'TLE on test 233': '未闻WA',
+    'CE_ACM Life From Zero': '从爆零开始的ACM生活',
+    'wangzai milk': '将来我一定比你聪明比你强',
+    '大吉大利，今晚吃 mian();': '大吉大利，今晚吃 mian();',
+    'running_chicken': '奔跑的小菜鸡',
+    'Die_Java': '铲车人',
+    'Big Small Sister HY wants me AC': '辉夜大小姐想让我AC',
+    'hotpot': '火锅队',
+    'Legal string': '合法字符串',
+    'ways to become passerby': '路人队伍的养成方法',
+    'namespace': '我们不会起名',
+    '^^^TOO LOW^^^': '地址过低',
+    'no_morning_training': '周末早上请不要训练',
+    '???': '普通攻击是WA而且触发TLE还能RE的弟弟你喜欢吗',
+    'FamerWzyYuki': '从前往后做',
+    'The Great Wave off Kanagawa': '神奈川冲浪里',
+}
 
-  '大吉大利，今晚吃 mian();': '*大吉大利，今晚吃 mian();',
-  'running_chicken': '*running_chicken',
+team_id_codeforces = {
+    '苍响': 1,
+    '试炼者': 2,
+    '我不知道.png': 3,
+    '仰望星空': 4,
+    '未闻WA': 5,
+    '从爆零开始的ACM生活': 6,
+    '将来我一定比你聪明比你强': 7,
+    '大吉大利，今晚吃 mian();': 8,
+    '奔跑的小菜鸡': 9,
+    '铲车人': 10,
+    '辉夜大小姐想让我AC': 11,
+    '火锅队': 12,
+    '合法字符串': 13,
+    '路人队伍的养成方法': 14,
+    '我们不会起名': 15,
+    '地址过低': 16,
+    '周末早上请不要训练': 17,
+    '普通攻击是WA而且触发TLE还能RE的弟弟你喜欢吗': 18,
+    '从前往后做': 19,
+    '神奈川冲浪里': 20,
 }
 
 def parse_codeforces(contest_name, contest_date=date.today()):
-    f = open('board/codeforces_board.html', 'r')
+    f = open('board/codeforces_board.html', 'r', encoding='utf-8')
     html = ''.join(f.readlines())
     soup = BeautifulSoup(html, "html.parser")
 
@@ -68,3 +94,4 @@ def parse_codeforces(contest_name, contest_date=date.today()):
     contest = {'title': contest_name, 'date': str(contest_date), 'num': problem_num, 'statuses': statuses,
                'ranklist': rank_list}
     print((json.dumps(contest)))
+    print(rank_list)

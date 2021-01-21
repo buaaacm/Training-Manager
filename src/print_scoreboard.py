@@ -74,8 +74,9 @@ def print_row(rank, name, problem, penalty, details, first_solved_time):
     for detail, first, pid in zip(details, first_solved_time,
                                   list(range(len(details)))):
         html += render_detail(pid, detail, first, pass_list)
-    statuses[team_name] = pass_list
-    rank_list.append(team_name)
+    team_name_out = id_to_team_name_ccpc_2020[team_name]
+    statuses[team_name_out] = pass_list
+    rank_list.append(team_name_out)
     html += '</tr>'
     print(("Log: ", team_name, problem, penalty))
     return html
@@ -149,8 +150,9 @@ def print_chart(length=300):
 def print_scoreboard(contest_id, contest_name, file_name, problem_name=None,
                      contest_date=date.today()):
     try:
-        f = open('board_html/%s.html' % file_name, "r")
-    except IOError:
+        f = open('board/%s.html' % file_name, "rb")
+    except IOError as e:
+        print(e)
         return
 
     competitors = []
@@ -167,7 +169,7 @@ def print_scoreboard(contest_id, contest_name, file_name, problem_name=None,
             rank += 1
             items = t.split(',')
             team_name = items[2][1:-1]
-            if team_name not in id_to_team_name_qingdao:
+            if team_name not in id_to_team_name_ccpc_2020:
                 continue
 
             problem_solved = str(items[3])
@@ -200,7 +202,7 @@ def print_scoreboard(contest_id, contest_name, file_name, problem_name=None,
             'buaaacm/Training-Manager">Training Manager</a> at %s.</p>' \
             % time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     html += '</body></html>'
-    f = open('board/%s.html' % file_name, 'w')
+    f = open('board/%s.html' % file_name, 'wb')
     html = BeautifulSoup(html, 'html.parser').prettify()
     f.write(html.encode('utf-8'))
     f.close()
@@ -209,4 +211,5 @@ def print_scoreboard(contest_id, contest_name, file_name, problem_name=None,
 
     contest = {'title': contest_name, 'date': str(contest_date), 'num': problem_num, 'statuses': statuses,
                'ranklist': rank_list}
-    print((json.dumps(contest)))
+    print('--------------------------------')
+    print(json.dumps(contest))

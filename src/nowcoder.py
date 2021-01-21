@@ -1,23 +1,53 @@
 # coding=utf-8
 import json
 from datetime import date
+
 from bs4 import BeautifulSoup
 
 team_name_nowcoder = {
-    'NonsenseTime': '趣味时光',
-    '未定群名': '未定群名',
-    '打不赢电脑': '打不赢电脑',
-    'Buaa_Butter_Fly': '无限大の梦',
-    'fishing': '某人征婚',
+    'IntrepidSword': '苍响',
     'Alchemist': '试炼者',
-    '肉夹馍': '肉夹馍',
-    'CE：从爆零开始的ACM生活': 'CE：从爆零开始的ACM生活',
-    '404_name_not_found': '很抱歉，该队名已被删除',
-    'freshmanAirProPlus': '萌新求带',
-    '根据相关法规，队名不予显示': '根据相关法规，队名不予显示',
-    'ACmonster': 'AC 怪',
-    '我裂开了': '我裂开了',
-    '将来我一定比你聪明比你强': '将来我一定比你聪明比你强',
+    '我不知道.png': '我不知道.png',
+    'Looking_up_at_the_starry_sky': '仰望星空',
+    '未闻WA': '未闻WA',
+    'CE：从爆零开始的ACM生活': '从爆零开始的ACM生活',
+    '将来我一定比你聪明比你强!': '将来我一定比你聪明比你强',
+    '大吉大利，晚上吃mian();': '大吉大利，今晚吃 mian();',
+    'running_chicken': '奔跑的小菜鸡',
+    '铲车人': '铲车人',
+    '辉夜大小姐想让我AC': '辉夜大小姐想让我AC',
+    'hotpot': '火锅队',
+    'Legal_string': '合法字符串',
+    '路人队伍的养成方法': '路人队伍的养成方法',
+    '我们不会起名': '我们不会起名',
+    '^^^TOOLOW^^^': '地址过低',
+    '周末早上请不要训练': '周末早上请不要训练',
+    'BigBros': '普通攻击是WA而且触发TLE还能RE的弟弟你喜欢吗',
+    '从前往后做': '从前往后做',
+    '神奈川冲浪里': '神奈川冲浪里',
+}
+
+team_id_nowcoder = {
+    '苍响': 1,
+    '试炼者': 2,
+    '我不知道.png': 3,
+    '仰望星空': 4,
+    '未闻WA': 5,
+    '从爆零开始的ACM生活': 6,
+    '将来我一定比你聪明比你强': 7,
+    '大吉大利，今晚吃 mian();': 8,
+    '奔跑的小菜鸡': 9,
+    '铲车人': 10,
+    '辉夜大小姐想让我AC': 11,
+    '火锅队': 12,
+    '合法字符串': 13,
+    '路人队伍的养成方法': 14,
+    '我们不会起名': 15,
+    '地址过低': 16,
+    '周末早上请不要训练': 17,
+    '普通攻击是WA而且触发TLE还能RE的弟弟你喜欢吗': 18,
+    '从前往后做': 19,
+    '神奈川冲浪里': 20,
 }
 
 statuses = {}
@@ -26,7 +56,7 @@ rank_list = []
 
 def parse_team_name_nowcoder(contest_name, contest_date=date.today()):
     # rank-main class
-    f = open('board/nowcoder_board.html', 'r')
+    f = open('board/nowcoder_board.html', 'r', encoding='utf-8')
     html = f.readline()
     soup = BeautifulSoup(html, "html.parser")
 
@@ -44,7 +74,7 @@ def parse_team_name_nowcoder(contest_name, contest_date=date.today()):
         if solved_problem_num.endswith('AK'):
             solved_problem_num = solved_problem_num[:-2]
         solved_problem_num = int(solved_problem_num)
-        
+
         buaa[i] = team_name
         # print(team_name, solved_problem_num)
 
@@ -81,3 +111,6 @@ def parse_team_name_nowcoder(contest_name, contest_date=date.today()):
     contest = {'title': contest_name, 'date': str(contest_date), 'num': problem_num, 'statuses': statuses,
                'ranklist': rank_list}
     print((json.dumps(contest)))
+
+    print(rank_list)
+    print(', '.join(map(str, [team_id_nowcoder[team] for team in rank_list])))
