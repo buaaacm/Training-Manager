@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from src.login import login
 from datetime import datetime, timedelta
 
-problem_id = list(range(672, 684, 1))
+problem_id = list(range(704, 716, 1))
 
 team_id_codeforces = {
     'Kaguya-sama wanna me AC': 153,
@@ -15,16 +15,17 @@ team_id_codeforces = {
     'AAUB': 159,
     'so far so weak': 160,
     'the anonymous': 161,
-    'FamerWzyYuki': 162,
+    'penalty champion': 162,
     'I dont know.png': 163,
     'hotpot': 164,
-    # 'Equilateral triangle': 165,
+    'Equilateral triangle': 165,
     '总之就是非常离谱': 166,
     'Debuggers': 167,
     '大吉大利，今晚吃 mian();': 168,
     'Blastoise': 169,
     'Ypa Girls': 170,
     'Life in BUAA with Involution from Zero': 171,
+    'BUAA': 172,
 }
 
 
@@ -46,7 +47,7 @@ def parse_codeforces():
 
         pid = 0
 
-        for detail in info[4:]:
+        for detail in info[5:]:
             status = detail.text.strip()
             time = -1
             if ':' not in status:
@@ -70,7 +71,7 @@ def parse_codeforces():
                     'dirt': tries,
                 }
                 if data['passed']:
-                    sub_time = datetime.strptime('2021-07-22T12:00:00', '%Y-%m-%dT%H:%M:%S') + \
+                    sub_time = datetime.strptime('2021-07-29T12:00:00', '%Y-%m-%dT%H:%M:%S') + \
                                timedelta(minutes=time)
                     data['submission_time'] = sub_time.strftime('%Y-%m-%dT%H:%M:%S+08:00')
                 print(data)

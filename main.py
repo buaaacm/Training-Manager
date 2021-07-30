@@ -9,6 +9,6 @@ if __name__ == '__main__':
     # parse_hihocoder('ACM-ICPC国际大学生程序设计竞赛北京赛区(2017)网络赛')
     # parse_team_name_nowcoder('2019牛客暑期多校训练营（第十场）')
     # parse_vjudge('The 2013 ACM-ICPC Asia Changsha Regional Contest')
-    parse_team_name_nowcoder()
-    # parse_codeforces()
+    # parse_team_name_nowcoder()
+    parse_codeforces()
     pass

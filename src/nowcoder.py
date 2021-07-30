@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 from src.login import login
 
-problem_id = list(range(684, 694, 1))
+problem_id = list(range(694, 704, 1))
 
 team_id_nowcoder = {
     '沃尔沃夫': 153,
@@ -27,6 +27,8 @@ team_id_nowcoder = {
     '水箭龟队': 169,
     'BUAA_魔法少女': 170,
     '1145141919810': 171,
+    '希望这次能出线': 172,
+    'cxccxc': 172,
 }
 
 statuses = {}
@@ -82,7 +84,7 @@ def parse_team_name_nowcoder():
                     'dirt': wrong_tries,
                 }
                 if data['passed']:
-                    sub_time = datetime.strptime('2021-07-24T12:00:00', '%Y-%m-%dT%H:%M:%S') + \
+                    sub_time = datetime.strptime('2021-07-26T12:00:00', '%Y-%m-%dT%H:%M:%S') + \
                                timedelta(minutes=pass_time)
                     data['submission_time'] = sub_time.strftime('%Y-%m-%dT%H:%M:%S+08:00')
                 print(data)
