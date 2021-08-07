@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from src.login import login
 from datetime import datetime, timedelta
 
-problem_id = list(range(704, 716, 1))
+problem_id = list(range(738, 750, 1))
 
 team_id_codeforces = {
     'Kaguya-sama wanna me AC': 153,
@@ -30,7 +30,7 @@ team_id_codeforces = {
 
 
 def parse_codeforces():
-    f = open('board/codeforces_board.html', 'r', encoding='utf-8')
+    f = open('../board/codeforces_board.html', 'r', encoding='utf-8')
     html = ''.join(f.readlines())
     soup = BeautifulSoup(html, "html.parser")
     session = login()
@@ -47,7 +47,7 @@ def parse_codeforces():
 
         pid = 0
 
-        for detail in info[5:]:
+        for detail in info[4:]:
             status = detail.text.strip()
             time = -1
             if ':' not in status:
@@ -71,7 +71,7 @@ def parse_codeforces():
                     'dirt': tries,
                 }
                 if data['passed']:
-                    sub_time = datetime.strptime('2021-07-29T12:00:00', '%Y-%m-%dT%H:%M:%S') + \
+                    sub_time = datetime.strptime('2021-08-05T12:00:00', '%Y-%m-%dT%H:%M:%S') + \
                                timedelta(minutes=time)
                     data['submission_time'] = sub_time.strftime('%Y-%m-%dT%H:%M:%S+08:00')
                 print(data)
@@ -79,3 +79,7 @@ def parse_codeforces():
                 print(r.json())
                 print(r.status_code)
             pid += 1
+
+
+if __name__ == '__main__':
+    parse_codeforces()

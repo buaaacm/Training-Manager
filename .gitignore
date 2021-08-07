@@ -5,11 +5,20 @@
 log.*
 
 # Original HTML file
-board/
+src/board/
 
 # Confidential team id
 src/constants.py
 
+# Raw data
+data/
+
 # JetBrains
 .idea/
 *.iml
+
+# Info
+config/config.yaml
+
+# DS_Store
+.DS_Store

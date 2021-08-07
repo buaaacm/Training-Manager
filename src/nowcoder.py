@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 from src.login import login
 
-problem_id = list(range(694, 704, 1))
+problem_id = list(range(750, 761, 1))
 
 team_id_nowcoder = {
     '沃尔沃夫': 153,
@@ -84,11 +84,14 @@ def parse_team_name_nowcoder():
                     'dirt': wrong_tries,
                 }
                 if data['passed']:
-                    sub_time = datetime.strptime('2021-07-26T12:00:00', '%Y-%m-%dT%H:%M:%S') + \
+                    sub_time = datetime.strptime('2021-08-07T12:00:00', '%Y-%m-%dT%H:%M:%S') + \
                                timedelta(minutes=pass_time)
                     data['submission_time'] = sub_time.strftime('%Y-%m-%dT%H:%M:%S+08:00')
-                print(data)
                 r = session.post(f'http://127.0.0.1:8000/training/submission/', data=data)
                 print(r.json())
                 print(r.status_code)
             pid += 1
+
+
+if __name__ == '__main__':
+    parse_team_name_nowcoder()
